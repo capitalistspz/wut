@@ -500,7 +500,7 @@ OSGetThreadAffinity(OSThread *thread);
  * Get a thread's name.
  */
 const char *
-OSGetThreadName(OSThread *thread);
+OSGetThreadName(const OSThread *thread);
 
 
 /**
