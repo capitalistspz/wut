@@ -78,7 +78,7 @@ OSTick
 OSGetSystemTick();
 
 OSTime
-OSCalendarTimeToTicks(OSCalendarTime *calendarTime);
+OSCalendarTimeToTicks(const OSCalendarTime *calendarTime);
 
 void
 OSTicksToCalendarTime(OSTime time,
