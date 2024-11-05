@@ -193,7 +193,7 @@ WUT_CHECK_SIZE(CAMSurface, 0x20);
 * \returns camera handle on success, and -1 on failure
 */
 CAMHandle 
-CAMInit(int instance, CAMSetupInfo *setupInfo, CAMError *err);
+CAMInit(int instance, const CAMSetupInfo *setupInfo, CAMError *err);
 
 /**
 * Deinitialize and clean up
@@ -220,7 +220,7 @@ CAMClose(CAMHandle handle);
 * \returns CAM_ERROR_INVALID_ARG if streamInfo is NULL
 */
 int32_t
-CAMGetMemReq(CAMStreamInfo *streamInfo);
+CAMGetMemReq(const CAMStreamInfo *streamInfo);
 
 /**
 * Submit 1 surface to the working queue.
@@ -235,7 +235,7 @@ CAMSubmitTargetSurface(CAMHandle handle, CAMSurface *surface);
 * Checks whether memory is segmented correctly to be used with the camera library
 */
 CAMError 
-CAMCheckMemSegmentation(void *pMem, uint32_t size);
+CAMCheckMemSegmentation(const void *pMem, uint32_t size);
 
 #ifdef __cplusplus
 }
