@@ -890,7 +890,7 @@ WPADCanSendStreamData(WPADChan channel);
  */
 WPADError
 WPADSendStreamData(WPADChan channel,
-                   void *data,
+                   const void *data,
                    uint32_t size);
 
 /**
@@ -972,7 +972,7 @@ WPADReadMemoryAsync(WPADChan channel,
  */
 WPADError
 WPADWriteMemoryAsync(WPADChan channel,
-                     void *source,
+                     const void *source,
                      uint32_t size,
                      uint32_t address,
                      WPADCallback callback);
@@ -1117,8 +1117,8 @@ WPADStartSyncDevice(void);
  * \endcode
  */
 BOOL
-WPADStartSyncDeviceEx(WPADAddress* deviceAddress,
-                      const char* deviceName);
+WPADStartSyncDeviceEx(const WPADAddress *deviceAddress,
+                      const char *deviceName);
 
 /**
  * Sets function to be run upon controller connect/disconnect
@@ -1188,7 +1188,7 @@ WPADiClearQueue(WPADiQueue *queue);
  * Checks if there is enough space in the queue
  */
 bool
-WPADiIsAvailableCmdQueue(WPADiQueue *queue,
+WPADiIsAvailableCmdQueue(const WPADiQueue *queue,
                          uint32_t count);
 
 /**
@@ -1197,7 +1197,7 @@ WPADiIsAvailableCmdQueue(WPADiQueue *queue,
  */
 int32_t
 WPADiHIDParser(WPADChan channel,
-               uint8_t *hidData);
+               const uint8_t *hidData);
 
 
 /**
@@ -1307,7 +1307,7 @@ WPADiSendWriteDataCmd(WPADiQueue *cmdQueue,
  */
 BOOL
 WPADiSendWriteData(WPADiQueue *cmdQueue,
-                   void *source,
+                   const void *source,
                    uint32_t size,
                    uint32_t address,
                    WPADCallback callback);
@@ -1347,7 +1347,7 @@ WPADiGetGameType(void);
  * - WPADiWriteGameData
  */
 void
-WPADSetGameTitleUtf16(uint16_t *title);
+WPADSetGameTitleUtf16(const uint16_t *title);
 
 /**
  * Gets game title stored on specified controller
@@ -1388,7 +1388,7 @@ WPADGetGameDataTimestamp(WPADChan channel,
  */
 WPADError
 WPADiWriteGameData(WPADChan channel,
-                   void *source,
+                   const void *source,
                    uint16_t size,
                    uint32_t offset,
                    WPADCallback callback);
