@@ -255,11 +255,41 @@ WUT_CHECK_SIZE(AXVoiceSrc, 0xe);
 
 #pragma pack(pop)
 
+/**
+ * Protects the voice from being modified from another thread.
+ * May be called multiple times from same thread to increment the protection count,
+ *
+ * If the protection count is 0, the voice is unprotected.
+ *
+ * \returns updated protection count on success.
+ * -1 if already protected by another thread,
+ * -2 during IST frame processing
+ * \sa AXVoiceEnd
+ * \sa AXIsVoiceProtected
+ */
 int32_t
 AXVoiceBegin(AXVoice *v);
 
+
+/**
+ * Decrements the protection count on a voice
+ * \returns updated protection count on success.
+ * -1 if protected by another thread,
+ * -2 during IST frame processing
+ * -3 if voice wasn't protected
+ * \sa AXVoiceBegin
+ * \sa AXIsVoiceProtected
+ */
 int32_t
 AXVoiceEnd(AXVoice *v);
+
+/**
+ * Returns whether the voice is protected by the current thread
+ * \sa AXVoiceBegin
+ * \sa AXVoiceEnd
+ */
+BOOL
+AXIsVoiceProtected(AXVoice *voice);
 
 /**
  * Acquires a free voice from AX. If there are no free voices,
