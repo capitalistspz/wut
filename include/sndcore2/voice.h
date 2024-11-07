@@ -329,6 +329,9 @@ AXFreeVoice(AXVoice *voice);
 uint32_t
 AXGetMaxVoices();
 
+BOOL
+AXCheckVoiceOffsets(AXVoiceOffsets *offsets);
+
 uint32_t
 AXGetVoiceCurrentOffsetEx(AXVoice *voice,
                           const void *samples);
