@@ -45,8 +45,11 @@ typedef int32_t AXVoiceSrcRatioResult;
 //! A value from enum AX_VOICE_TYPE.
 typedef uint32_t AXVoiceType;
 
-typedef void(*AXVoiceCallbackFn)(void *);
-typedef void(*AXVoiceCallbackExFn)(void *, uint32_t, uint32_t);
+//! A 16.16 fixed-point fractional number
+typedef uint32_t AXFixedPoint16_16;
+//! A 0.16 fixed-point fraction number
+typedef uint16_t AXFixedPoint0_16;
+
 typedef void(*AXVoiceCallbackFn)(AXVoice *voice);
 typedef void(*AXVoiceCallbackExFn)(AXVoice *voice, void* userCallback, uint32_t);
 
@@ -236,16 +239,12 @@ WUT_CHECK_SIZE(AXVoiceAdpcm, 0x28);
 
 #pragma pack(push, 1)
 
-/**
- * AXVoice Sample Rate Converter
- */
-struct AXVoiceSrc
+struct WUT_PACKED AXVoiceSrc
 {
-   //! Playback rate, fixed 16.16
-   uint32_t ratio;
-
-   //! Used by the resampler, fixed 0.16
-   uint16_t currentOffsetFrac;
+   //! Playback rate
+   AXFixedPoint16_16 ratio;
+   //! Used by the resampler
+   AXFixedPoint0_16 currentOffsetFrac;
    int16_t lastSample[4];
 };
 WUT_CHECK_OFFSET(AXVoiceSrc, 0x0, ratio);
@@ -407,6 +406,10 @@ void
 AXSetVoiceSrc(AXVoice *voice,
               AXVoiceSrc *src);
 
+/**
+ * Set voice sample rate conversion ratio
+ * \param ratio - ratio of source sample rate to target sample rate
+ */
 AXVoiceSrcRatioResult
 AXSetVoiceSrcRatio(AXVoice *voice,
                    float ratio);
