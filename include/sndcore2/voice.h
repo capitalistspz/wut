@@ -418,6 +418,13 @@ void
 AXSetVoiceSrcType(AXVoice *voice,
                   AXVoiceSrcType type);
 
+/**
+ * Set the voice state
+ * \note
+ * If state is AX_VOICE_STATE_PLAYING and the application is
+ * moved to background, the voice will pause.
+ * It will resume when the application returns to foreground
+ */
 void
 AXSetVoiceState(AXVoice *voice,
                 AXVoiceState state);
@@ -426,6 +433,9 @@ void
 AXSetVoiceType(AXVoice *voice,
                AXVoiceType type);
 
+/**
+* Set voice volume
+*/
 void
 AXSetVoiceVe(AXVoice *voice,
              AXVoiceVeData *veData);
