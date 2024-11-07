@@ -47,6 +47,8 @@ typedef uint32_t AXVoiceType;
 
 typedef void(*AXVoiceCallbackFn)(void *);
 typedef void(*AXVoiceCallbackExFn)(void *, uint32_t, uint32_t);
+typedef void(*AXVoiceCallbackFn)(AXVoice *voice);
+typedef void(*AXVoiceCallbackExFn)(AXVoice *voice, void* userCallback, uint32_t);
 
 enum AX_VOICE_FORMAT
 {
@@ -259,11 +261,27 @@ AXVoiceBegin(AXVoice *v);
 int32_t
 AXVoiceEnd(AXVoice *v);
 
+/**
+ * Acquires a free voice from AX. If there are no free voices,
+ * an existing voice with a lower priority will be dropped.
+ * \param priority - used to decide which voices are dropped
+ * \param callback - called when voice is dropped
+ * \sa AXFreeVoice
+ * \sa AXAcquireVoice
+ */
 AXVoice *
 AXAcquireVoice(uint32_t priority,
                AXVoiceCallbackFn callback,
                void *userContext);
-
+/**
+ * Acquires a voice from AX. If there are too many voices,
+ * an existing voice with a lower priority will be dropped.
+ * \param priority - used to decide which voices are dropped
+ * \param callback - called when voice is dropped
+ * \param userContext - second parameter when callback is called
+ * \sa AXFreeVoice
+ * \sa AXAcquireVoice
+ */
 AXVoice *
 AXAcquireVoiceEx(uint32_t priority,
                  AXVoiceCallbackExFn callback,
@@ -272,6 +290,9 @@ AXAcquireVoiceEx(uint32_t priority,
 BOOL
 AXCheckVoiceOffsets(AXVoiceOffsets *offsets);
 
+/**
+* Frees a voice
+*/
 void
 AXFreeVoice(AXVoice *voice);
 
