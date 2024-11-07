@@ -21,7 +21,7 @@ typedef struct AXVoiceDeviceBusMixData AXVoiceDeviceBusMixData;
 typedef struct AXVoiceDeviceMixData AXVoiceDeviceMixData;
 typedef struct AXVoiceLink AXVoiceLink;
 typedef struct AXVoiceOffsets AXVoiceOffsets;
-typedef struct AXVoiceSrc AXVoiceSrc;
+typedef struct WUT_PACKED AXVoiceSrc AXVoiceSrc;
 typedef struct AXVoiceVeData AXVoiceVeData;
 
 //! A value from enum AX_VOICE_FORMAT.
@@ -237,7 +237,6 @@ WUT_CHECK_OFFSET(AXVoiceAdpcm, 0x22, predScale);
 WUT_CHECK_OFFSET(AXVoiceAdpcm, 0x24, prevSample);
 WUT_CHECK_SIZE(AXVoiceAdpcm, 0x28);
 
-#pragma pack(push, 1)
 
 struct WUT_PACKED AXVoiceSrc
 {
@@ -251,8 +250,6 @@ WUT_CHECK_OFFSET(AXVoiceSrc, 0x0, ratio);
 WUT_CHECK_OFFSET(AXVoiceSrc, 0x4, currentOffsetFrac);
 WUT_CHECK_OFFSET(AXVoiceSrc, 0x6, lastSample);
 WUT_CHECK_SIZE(AXVoiceSrc, 0xe);
-
-#pragma pack(pop)
 
 /**
  * Protects the voice from being modified from another thread.
@@ -288,7 +285,7 @@ AXVoiceEnd(AXVoice *v);
  * \sa AXVoiceEnd
  */
 BOOL
-AXIsVoiceProtected(AXVoice *voice);
+AXIsVoiceProtected(const AXVoice *voice);
 
 /**
  * Acquires a free voice from AX. If there are no free voices,
@@ -316,9 +313,6 @@ AXAcquireVoiceEx(uint32_t priority,
                  AXVoiceCallbackExFn callback,
                  void *userContext);
 
-BOOL
-AXCheckVoiceOffsets(AXVoiceOffsets *offsets);
-
 /**
 * Frees a voice
 */
@@ -341,13 +335,15 @@ AXGetVoiceLoopCount(AXVoice *voice);
 void
 AXGetVoiceOffsets(AXVoice *voice,
                   AXVoiceOffsets *offsets);
-
+/**
+* Returns whether the voice is in the AX_VOICE_STATE_PLAYING state
+*/
 BOOL
-AXIsVoiceRunning(AXVoice *voice);
+AXIsVoiceRunning(const AXVoice *voice);
 
 void
 AXSetVoiceAdpcm(AXVoice *voice,
-                AXVoiceAdpcm *adpcm);
+                const AXVoiceAdpcm *adpcm);
 
 void
 AXSetVoiceAdpcmLoop(AXVoice *voice,
@@ -391,7 +387,7 @@ AXSetVoiceLoop(AXVoice *voice,
 
 void
 AXSetVoiceOffsets(AXVoice *voice,
-                  AXVoiceOffsets *offsets);
+                  const AXVoiceOffsets *offsets);
 
 void
 AXSetVoicePriority(AXVoice *voice,
@@ -404,7 +400,7 @@ AXSetVoiceRmtIIRCoefs(AXVoice *voice,
 
 void
 AXSetVoiceSrc(AXVoice *voice,
-              AXVoiceSrc *src);
+              const AXVoiceSrc *src);
 
 /**
  * Set voice sample rate conversion ratio
@@ -438,7 +434,7 @@ AXSetVoiceType(AXVoice *voice,
 */
 void
 AXSetVoiceVe(AXVoice *voice,
-             AXVoiceVeData *veData);
+             const AXVoiceVeData *veData);
 
 void
 AXSetVoiceVeDelta(AXVoice *voice,
