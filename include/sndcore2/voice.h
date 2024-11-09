@@ -288,7 +288,7 @@ BOOL
 AXIsVoiceProtected(const AXVoice *voice);
 
 /**
- * Acquires a free voice from AX. If there are no free voices,
+ * Acquires a voice from AX. If there are no free voices,
  * an existing voice with a lower priority will be dropped.
  * \param priority - used to decide which voices are dropped
  * \param callback - called when voice is dropped
@@ -300,7 +300,7 @@ AXAcquireVoice(uint32_t priority,
                AXVoiceCallbackFn callback,
                void *userContext);
 /**
- * Acquires a voice from AX. If there are too many voices,
+ * Acquires a voice from AX. If there are no free voices,
  * an existing voice with a lower priority will be dropped.
  * \param priority - used to decide which voices are dropped
  * \param callback - called when voice is dropped
@@ -323,7 +323,7 @@ uint32_t
 AXGetMaxVoices();
 
 BOOL
-AXCheckVoiceOffsets(AXVoiceOffsets *offsets);
+AXCheckVoiceOffsets(const AXVoiceOffsets *offsets);
 
 uint32_t
 AXGetVoiceCurrentOffsetEx(AXVoice *voice,
@@ -345,19 +345,34 @@ void
 AXSetVoiceAdpcm(AXVoice *voice,
                 const AXVoiceAdpcm *adpcm);
 
+/**
+ * Set ADPCM loop parameters
+ * \note
+ * the data at `loopData` is copied, no need to preserve the struct after calling
+ */
 void
 AXSetVoiceAdpcmLoop(AXVoice *voice,
-                    AXVoiceAdpcmLoopData *loopData);
+                    const AXVoiceAdpcmLoopData *loopData);
 
 void
 AXSetVoiceCurrentOffset(AXVoice *voice,
                         uint32_t offset);
 
+/**
+ * Set voice mix parameters
+ * \param type - type of audio output device
+ * \param deviceId - id of the device to change mix data of, valid IDs (inclusive) are
+ * TV: 0, GamePad: 0 to 1, Wii Remote: 0 to 3
+ * \param mixData - array of `N` mix data, `N` is determined by device type:
+ * TV: 6, GamePad: 4, Wii Remote: 1
+ * \note
+ * the data at `mixData` is copied, no need to preserve the struct after calling
+ */
 AXResult
 AXSetVoiceDeviceMix(AXVoice *voice,
                     AXDeviceType type,
-                    uint32_t id,
-                    AXVoiceDeviceMixData *mixData);
+                    uint32_t deviceId,
+                    const AXVoiceDeviceMixData *mixData);
 
 void
 AXSetVoiceEndOffset(AXVoice *voice,
@@ -398,6 +413,11 @@ AXSetVoiceRmtIIRCoefs(AXVoice *voice,
                       uint16_t filter,
                       ...);
 
+/**
+ * Set voice sample rate conversion parameters
+ * \note
+ * the data at `src` is copied, no need to preserve the struct after calling
+ */
 void
 AXSetVoiceSrc(AXVoice *voice,
               const AXVoiceSrc *src);
@@ -430,8 +450,10 @@ AXSetVoiceType(AXVoice *voice,
                AXVoiceType type);
 
 /**
-* Set voice volume
-*/
+ * Set voice volume
+ * \note
+ * the data at `veData` is copied, no need to preserve the struct after calling
+ */
 void
 AXSetVoiceVe(AXVoice *voice,
              const AXVoiceVeData *veData);
